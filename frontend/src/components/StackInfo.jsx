@@ -1,4 +1,4 @@
-export default function StackInfo() {
+export default function StackInfo({ onBack }) {
   const routes = [
     { method: 'GET', path: '/api/notes', desc: 'List all user notes' },
     { method: 'POST', path: '/api/notes', desc: 'Create a new note' },
@@ -30,6 +30,12 @@ export default function StackInfo() {
 
   return (
     <div className="stack-info">
+      {onBack && (
+        <button className="btn btn-secondary stack-back-btn" onClick={onBack}>
+          <i className="fas fa-arrow-left" /> Back to Sign In
+        </button>
+      )}
+
       {/* Header Section */}
       <div className="stack-header">
         <h2>Recommended Stack</h2>

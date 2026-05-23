@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
-export default function LoginPage({ onSwitch }) {
+export default function LoginPage({ onSwitch, onStackInfo }) {
   const { login } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -73,6 +73,9 @@ export default function LoginPage({ onSwitch }) {
 
         <p className="auth-switch">
           Don't have an account? <button className="link-btn" onClick={onSwitch}>Create one</button>
+        </p>
+        <p className="auth-stack-link">
+          <button className="link-btn" onClick={onStackInfo}><i className="fas fa-layer-group" /> View Stack Info</button>
         </p>
       </div>
     </div>
