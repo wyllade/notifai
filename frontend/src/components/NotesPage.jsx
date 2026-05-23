@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
 import NoteCard from './NoteCard'
 
-const API = 'http://localhost:5000/api'
+const API = '/api'
 
 export default function NotesPage() {
   const { user, logout, authFetch } = useAuth()
