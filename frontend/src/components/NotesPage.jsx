@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../context/AuthContext'
 import NoteCard from './NoteCard'
+import StackInfo from './StackInfo'
 
 const API = '/api'
 
 export default function NotesPage() {
   const { user, logout, authFetch } = useAuth()
+  const [view, setView] = useState('notes')
   const [notes, setNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -123,10 +125,14 @@ export default function NotesPage() {
         </div>
 
         <nav className="sidebar-nav">
-          <div className="nav-item active">
+          <div className={`nav-item ${view === 'notes' ? 'active' : ''}`} onClick={() => setView('notes')}>
             <i className="fas fa-note-sticky" />
             <span>My Notes</span>
             <span className="badge">{notes.length}</span>
+          </div>
+          <div className={`nav-item ${view === 'stack' ? 'active' : ''}`} onClick={() => setView('stack')}>
+            <i className="fas fa-layer-group" />
+            <span>Stack Info</span>
           </div>
         </nav>
 
@@ -137,31 +143,37 @@ export default function NotesPage() {
       </aside>
 
       <main className="main-content">
-        <header className="content-header">
-          <div>
-            <h2>My Notes</h2>
-            <p>{notes.length} note{notes.length !== 1 ? 's' : ''}</p>
-          </div>
-          <button className="btn btn-primary" onClick={openCreate}>
-            <i className="fas fa-plus" /> New Note
-          </button>
-        </header>
+        {view === 'notes' ? (
+          <>
+            <header className="content-header">
+              <div>
+                <h2>My Notes</h2>
+                <p>{notes.length} note{notes.length !== 1 ? 's' : ''}</p>
+              </div>
+              <button className="btn btn-primary" onClick={openCreate}>
+                <i className="fas fa-plus" /> New Note
+              </button>
+            </header>
 
-        {notes.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon"><i className="fas fa-pen" /></div>
-            <h3>No notes yet</h3>
-            <p>Create your first note to get started</p>
-            <button className="btn btn-primary" onClick={openCreate}>
-              <i className="fas fa-plus" /> Create Note
-            </button>
-          </div>
+            {notes.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon"><i className="fas fa-pen" /></div>
+                <h3>No notes yet</h3>
+                <p>Create your first note to get started</p>
+                <button className="btn btn-primary" onClick={openCreate}>
+                  <i className="fas fa-plus" /> Create Note
+                </button>
+              </div>
+            ) : (
+              <div className="notes-grid">
+                {notes.map(note => (
+                  <NoteCard key={note.id} note={note} onEdit={openEdit} onDelete={handleDelete} />
+                ))}
+              </div>
+            )}
+          </>
         ) : (
-          <div className="notes-grid">
-            {notes.map(note => (
-              <NoteCard key={note.id} note={note} onEdit={openEdit} onDelete={handleDelete} />
-            ))}
-          </div>
+          <StackInfo />
         )}
       </main>
 
